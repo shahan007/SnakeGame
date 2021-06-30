@@ -1,5 +1,5 @@
 # SnakeGame
-classic snake game gui, built with python with increasing speed
+classic snake game gui, built with python with increasing speed<br>
 
 #### Clone the repo
 `git clone https://github.com/shahan007/SnakeGame`
