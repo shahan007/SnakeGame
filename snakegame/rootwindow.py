@@ -2,12 +2,20 @@ from tkinter import  ttk
 import tkinter as tk
 from .snakecanvas import Snake
 from .endgameframe import EndGameFrame
+from ttkbootstrap import Style
 
 class RootWindow(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        self.title('Snake Game')
+        self.title('Snake Game')                
+        self.style = Style()
+        self.style.theme_use('solar')
+        self.style.configure('TButton', borderwidth=0)
+        self.style.map(
+            "TButton",
+            foreground = [('hover', self.style.lookup('TButton', 'background'))],
+            background =[('hover',self.style.lookup('TButton','foreground'))])
         self.resizable(False, False)
         self.create()
         self.place()

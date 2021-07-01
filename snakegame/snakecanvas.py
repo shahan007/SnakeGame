@@ -47,9 +47,9 @@ class Snake(tk.Canvas):
     def create_score(self):
         self.create_text(
             80, 15,
-            text=f"Score: {self.__score} Speed is {self.__GameSpeedVariance}",
+            text=f"Score: {self.__score} \t Speed is {self.__GameSpeedVariance} ms",
             tag='score',
-            fill='#fff')
+            fill='#CBC3E3')
 
     def insert_objects(self):
         self.create_score()
@@ -107,7 +107,7 @@ class Snake(tk.Canvas):
             score = self.find_withtag("score")
             self.itemconfigure(
                 score,
-                text=f"Score: {self.__score} Speed is {self.__GameSpeedVariance}")
+                text=f"Score: {self.__score} \t Speed is {self.__GameSpeedVariance} ms")
 
     def randomise_food_loc(self):
         while True:
@@ -130,8 +130,7 @@ class Snake(tk.Canvas):
         if new_direction in self.__only_directions and self.__opposites[self.__CurDirection] != new_direction:
             self.__CurDirection = new_direction
 
-    def end_game(self):
-        text = f"Game Over! You score is {self.__score}"
-        self.__root.EndGameFrame.change_label(text)                                
+    def end_game(self):        
+        self.__root.EndGameFrame.change_label(self.__score)  
         self.__root.EndGameFrame.tkraise()
         self.destroy()
