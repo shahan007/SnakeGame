@@ -14,9 +14,11 @@ class RootWindow(tk.Tk):
         self.style.configure('TButton', borderwidth=0)
         self.style.map(
             "TButton",
-            foreground = [('hover', self.style.lookup('TButton', 'background'))],
-            background =[('hover',self.style.lookup('TButton','foreground'))])
-        self.resizable(False, False)
+            foreground=[('hover', '!disabled', self.style.lookup('TButton', 'background')),
+                        ('disabled','white')],
+            background =[('hover','!disabled',self.style.lookup('TButton','foreground')),
+                         ('disabled','grey')])
+        self.resizable(False, False)        
         self.create()
         self.place()
         self.__MainGameFrame.tkraise()
@@ -25,8 +27,9 @@ class RootWindow(tk.Tk):
     def EndGameFrame(self):
         return self.__EndGameFrame
         
-    def update_snakeCanvas(self):
+    def update_snakeCanvas(self):        
         self.__snakeCanvas = Snake(self.__MainGameFrame, self)
+        self.__EndGameFrame.replayBtn.config(state=tk.DISABLED)
         self.__snakeCanvas.grid(row=0, column=0)
         self.__MainGameFrame.tkraise()
             

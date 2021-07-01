@@ -12,6 +12,10 @@ class EndGameFrame(ttk.Frame):
         self.create_widgets()
         self.place_widgets()
     
+    @property
+    def replayBtn(self):
+        return self.__replayBtn
+    
     def create_widgets(self):        
         self.__label = ttk.Label(
             self,
@@ -25,7 +29,7 @@ class EndGameFrame(ttk.Frame):
         self.__replayBtn = ttk.Button(
             self, padding=(20, 10),
             command=self.__container.update_snakeCanvas,
-            text='RETRY')
+            text='RETRY',state=tk.DISABLED)
 
     def place_widgets(self):
         self.__label.grid(row=1,column=0)

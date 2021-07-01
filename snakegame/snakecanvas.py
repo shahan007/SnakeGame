@@ -2,6 +2,8 @@ from tkinter import ttk
 import tkinter as tk
 from PIL import Image, ImageTk
 from random import randrange
+from playsound import playsound
+import threading
 import os
 
 class Snake(tk.Canvas):
@@ -91,7 +93,10 @@ class Snake(tk.Canvas):
             head in self.__snakePosition[:-1])
 
     def check_eat_food(self, head):
-        if head == self.__foodPosition:
+        if head == self.__foodPosition:      
+            thread = threading.Thread(target=lambda: self.play_sound(
+                os.path.join(os.path.dirname(__file__), 'assets/eat.wav'), status=False))
+            thread.start()
             self.__score += 1
             self.__snakePosition.insert(0, self.__snakePosition[1])
             self.create_image(
@@ -130,7 +135,16 @@ class Snake(tk.Canvas):
         if new_direction in self.__only_directions and self.__opposites[self.__CurDirection] != new_direction:
             self.__CurDirection = new_direction
 
+    def play_sound(self,path,status=False):
+        playsound(path)
+        if status:
+            self.__root.EndGameFrame.replayBtn.config(state=tk.NORMAL)                        
+        
     def end_game(self):        
+        thread = threading.Thread(target=lambda: self.play_sound(os.path.join(
+            os.path.dirname(__file__), 'assets/gameover.wav'), status=True))
+        thread.start()                
+        self.__root.kill_thread = thread
         self.__root.EndGameFrame.change_label(self.__score)  
         self.__root.EndGameFrame.tkraise()
-        self.destroy()
+        self.destroy()        
