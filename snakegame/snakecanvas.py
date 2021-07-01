@@ -6,13 +6,13 @@ import os
 
 class Snake(tk.Canvas):
 
-    __MoveIncrement = 20
-    __GameSpeedVariance = 10
-    __GameSpeed = 1000 // __GameSpeedVariance
-
-    def __init__(self, container):
+    def __init__(self, container,root):
         super().__init__(container)
         self.__container = container
+        self.__root      = root        
+        self.__MoveIncrement = 20
+        self.__GameSpeedVariance = 10
+        self.__GameSpeed = 1000 // self.__GameSpeedVariance
         self.__score = 0
         self.__snakePosition = [[60, 100], [80, 100], [100, 100]]
         self.__foodPosition = self.randomise_food_loc()
@@ -47,7 +47,7 @@ class Snake(tk.Canvas):
     def create_score(self):
         self.create_text(
             80, 15,
-            text=f"Score: {self.__score} Speed is {type(self).__GameSpeedVariance}",
+            text=f"Score: {self.__score} Speed is {self.__GameSpeedVariance}",
             tag='score',
             fill='#fff')
 
@@ -70,13 +70,13 @@ class Snake(tk.Canvas):
     def move_snake(self):
         head_x, head_y = self.__snakePosition[-1]
         if self.__CurDirection == "Up":
-            head_y = head_y - type(self).__MoveIncrement
+            head_y = head_y - self.__MoveIncrement
         elif self.__CurDirection == 'Right':
-            head_x = head_x + type(self).__MoveIncrement
+            head_x = head_x + self.__MoveIncrement
         elif self.__CurDirection == 'Down':
-            head_y = head_y + type(self).__MoveIncrement
+            head_y = head_y + self.__MoveIncrement
         elif self.__CurDirection == 'Left':
-            head_x = head_x - type(self).__MoveIncrement
+            head_x = head_x - self.__MoveIncrement
         newHeadP = [head_x, head_y]
         self.__snakePosition = self.__snakePosition[1:] + [newHeadP]
         for segment, position in zip(self.find_withtag('snake'), self.__snakePosition):
@@ -90,13 +90,6 @@ class Snake(tk.Canvas):
             or
             head in self.__snakePosition[:-1])
 
-    def randomise_food_loc(self):
-        while True:
-            x, y = randrange(40, 560, 20), randrange(80, 580, 20)
-            new_pos = [x, y]
-            if new_pos not in self.__snakePosition:
-                return new_pos
-
     def check_eat_food(self, head):
         if head == self.__foodPosition:
             self.__score += 1
@@ -107,21 +100,30 @@ class Snake(tk.Canvas):
                 image=self.__snake,
                 tag='snake'
             )
-            type(self).__GameSpeedVariance += 1
-            type(self).__GameSpeed = 1000 // type(self).__GameSpeedVariance
+            self.__GameSpeedVariance += 1
+            self.__GameSpeed = 1000 // self.__GameSpeedVariance
             self.__foodPosition = self.randomise_food_loc()
             self.coords(self.find_withtag('food'), *self.__foodPosition)
             score = self.find_withtag("score")
             self.itemconfigure(
-                score, text=f"Score: {self.__score} Speed is {type(self).__GameSpeedVariance}")
+                score,
+                text=f"Score: {self.__score} Speed is {self.__GameSpeedVariance}")
+
+    def randomise_food_loc(self):
+        while True:
+            x, y = randrange(40, 560, 20), randrange(80, 580, 20)
+            new_pos = [x, y]
+            if new_pos not in self.__snakePosition:
+                return new_pos
 
     def execute_actions(self):
         head = self.__snakePosition[-1]
         if self.check__collision(head):
-            self.end_game()
+            self.end_game()   
+            return         
         self.check_eat_food(head)
         self.move_snake()
-        self.after(type(self).__GameSpeed, self.execute_actions)
+        self.after(self.__GameSpeed, self.execute_actions)
 
     def key_press_execute(self, event):
         new_direction = event.keysym
@@ -129,11 +131,7 @@ class Snake(tk.Canvas):
             self.__CurDirection = new_direction
 
     def end_game(self):
-        self.delete(tk.ALL)
-        self.create_text(
-            self.winfo_width() / 2,
-            self.winfo_height() / 2.5,
-            text=f"Game Over! You score is {self.__score}",
-            fill='#ff0000',
-            font=('TkDefaultFont', 24, 'bold')
-        )
+        text = f"Game Over! You score is {self.__score}"
+        self.__root.EndGameFrame.change_label(text)                                
+        self.__root.EndGameFrame.tkraise()
+        self.destroy()
