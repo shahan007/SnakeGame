@@ -138,7 +138,8 @@ class Snake(tk.Canvas):
     def play_sound(self,path,status=False):
         playsound(path)
         if status:
-            self.__root.EndGameFrame.replayBtn.config(state=tk.NORMAL)                        
+            self.__root.EndGameFrame.replayBtn.config(state=tk.NORMAL)  
+            self.__root.EndGameFrame.quitBtn.config(state=tk.NORMAL)
         
     def end_game(self):        
         thread = threading.Thread(target=lambda: self.play_sound(os.path.join(

@@ -16,6 +16,10 @@ class EndGameFrame(ttk.Frame):
     def replayBtn(self):
         return self.__replayBtn
     
+    @property
+    def quitBtn(self):
+        return self.__quitBtn
+    
     def create_widgets(self):        
         self.__label = ttk.Label(
             self,
@@ -27,14 +31,19 @@ class EndGameFrame(ttk.Frame):
             font="Didot 15 bold",
             foreground='#00ff00')        
         self.__replayBtn = ttk.Button(
-            self, padding=(20, 10),
+            self, padding=(20, 10),width=10,
             command=self.__container.update_snakeCanvas,
             text='RETRY',state=tk.DISABLED)
+        self.__quitBtn = ttk.Button(
+            self, padding=(20, 10),width=10,
+            command=self.__container.destroy,
+            text='QUIT', state=tk.DISABLED)
 
     def place_widgets(self):
         self.__label.grid(row=1,column=0)
         self.__scoreLabel.grid(row=2, column=0,sticky="N")
-        self.__replayBtn.grid(row=2, column=0,sticky='S')
+        self.__replayBtn.grid(row=2, column=0, sticky='S', padx=(0, 135))
+        self.__quitBtn.grid(row=2, column=0, sticky='S',padx=(135,0))
 
     def change_label(self, score):
         self.__scoreLabel.config(text=f"Your Score is: {score}")        

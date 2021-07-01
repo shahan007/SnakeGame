@@ -30,6 +30,7 @@ class RootWindow(tk.Tk):
     def update_snakeCanvas(self):        
         self.__snakeCanvas = Snake(self.__MainGameFrame, self)
         self.__EndGameFrame.replayBtn.config(state=tk.DISABLED)
+        self.__EndGameFrame.quitBtn.config(state=tk.DISABLED)
         self.__snakeCanvas.grid(row=0, column=0)
         self.__MainGameFrame.tkraise()
             
