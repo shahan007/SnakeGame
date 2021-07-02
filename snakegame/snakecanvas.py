@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from random import randrange
 from playsound import playsound
 import threading
+import sqlite3 as db
 import os
 
 class Snake(tk.Canvas):
@@ -16,6 +17,10 @@ class Snake(tk.Canvas):
         self.__GameSpeedVariance = 10
         self.__GameSpeed = 1000 // self.__GameSpeedVariance
         self.__score = 0
+        self.__dataFile = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'data.sqlite')
+        self.__connection = db.connect(self.__dataFile)
+        self.read_data(self.__connection)        
         self.__snakePosition = [[60, 100], [80, 100], [100, 100]]
         self.__foodPosition = self.randomise_food_loc()
         self.__CurDirection = 'Right'
@@ -31,6 +36,23 @@ class Snake(tk.Canvas):
         self.insert_objects()
         self.execute_actions()
 
+    def read_data(self,connection):
+        with connection:
+            query = connection.execute("SELECT * FROM user LIMIT 1;")
+            self.__previousScore,self.__highScore = query.fetchone()
+
+    def update_data(self,connection):
+        self.__previousScore = self.__score
+        if self.__score > self.__highScore:
+            self.__highScore = self.__score
+        with connection:
+            connection.execute("""
+                            UPDATE user
+                            SET previousScore = ? ,
+                            highScore = ?
+                            """,
+                            (self.__previousScore, self.__highScore))
+        
     def style_canvas(self):
         self.config(
             width=600,
@@ -144,8 +166,9 @@ class Snake(tk.Canvas):
     def end_game(self):        
         thread = threading.Thread(target=lambda: self.play_sound(os.path.join(
             os.path.dirname(__file__), 'assets/gameover.wav'), status=True))
-        thread.start()                
-        self.__root.kill_thread = thread
+        thread.start()        
+        self.update_data(self.__connection)        
+        self.destroy()        
         self.__root.EndGameFrame.change_label(self.__score)  
         self.__root.EndGameFrame.tkraise()
-        self.destroy()        
+        
