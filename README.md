@@ -15,7 +15,7 @@ There are two buttons on the scoring page for playing again and quitting the gam
 
 `pip install -r requirements.txt`
 
-### Setting up database _(optional as it has been already created)_
+#### Setting up database _(optional as it has been already created)_
 `python create_table.py`
 
 #### Start the game
