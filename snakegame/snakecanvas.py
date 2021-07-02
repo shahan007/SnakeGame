@@ -43,8 +43,6 @@ class Snake(tk.Canvas):
 
     def update_data(self,connection):
         self.__previousScore = self.__score
-        if self.__score > self.__highScore:
-            self.__highScore = self.__score
         with connection:
             connection.execute("""
                             UPDATE user
@@ -166,9 +164,11 @@ class Snake(tk.Canvas):
     def end_game(self):        
         thread = threading.Thread(target=lambda: self.play_sound(os.path.join(
             os.path.dirname(__file__), 'assets/gameover.wav'), status=True))
-        thread.start()        
-        self.update_data(self.__connection)        
-        self.destroy()        
-        self.__root.EndGameFrame.change_label(self.__score)  
+        thread.start()                
+        if self.__score > self.__highScore:
+            self.__highScore = self.__score
+        self.__root.EndGameFrame.change_label(
+            self.__score, self.__previousScore, self.__highScore)
+        self.update_data(self.__connection)                                
         self.__root.EndGameFrame.tkraise()
-        
+        self.destroy()

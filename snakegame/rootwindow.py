@@ -23,9 +23,10 @@ class RootWindow(tk.Tk):
         self.place()
         self.__MainGameFrame.tkraise()
 
+
     @property
     def EndGameFrame(self):
-        return self.__EndGameFrame
+        return self.__EndGameFrame    
         
     def update_snakeCanvas(self):        
         self.__snakeCanvas = Snake(self.__MainGameFrame, self)
