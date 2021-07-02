@@ -68,10 +68,15 @@ class Snake(tk.Canvas):
 
     def create_score(self):
         self.create_text(
-            80, 15,
+            87, 22,
             text=f"Score: {self.__score} \t Speed is {self.__GameSpeedVariance} ms",
             tag='score',
             fill='#CBC3E3')
+        self.create_text(
+            495,22,
+            text=f"Previous Score: {self.__previousScore}  High Score: {self.__highScore}",
+            fill='#CBC3E3'
+        )
 
     def insert_objects(self):
         self.create_score()
