@@ -7,14 +7,14 @@ There are two buttons on the scoring page for playing again and quitting the gam
 
 #### Clone the repo
 ```console
-git clone https://github.com/shahan007/SnakeGame
+$ git clone https://github.com/shahan007/SnakeGame
 ```
 
 #### Set up the environment
 ```console
-python -m venv venv
-source venv/Scripts/activate
-pip install -r requirements.txt
+$ python -m venv venv
+$ source venv/Scripts/activate
+$ pip install -r requirements.txt
 ```
 
 #### Setting up database _(optional as it has been already created)_
@@ -24,5 +24,5 @@ python create_table.py
 
 #### Start the game
 ```console
-python run.py
+$ python run.py
 ```
