@@ -19,7 +19,7 @@ $ pip install -r requirements.txt
 
 #### Setting up database _(optional as it has been already created)_
 ```console
-python create_table.py
+$ python create_table.py
 ```
 
 #### Start the game
