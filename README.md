@@ -4,6 +4,11 @@ Use arrow keys to move Up, Down, Left & Right. If the snake touches itself or th
 For the best experience please turn on your device audio as an audio clip plays when the snake successfully eats it food or when the snake dies.
 There are two buttons on the scoring page for playing again and quitting the game.<br><br>
 
+## Built With
+- _Python version 3.8.0_
+- _(audio from [mixkit](https://mixkit.co/))_ <br><br>
+
+## How to run ?
 
 #### Clone the repo
 ```console
